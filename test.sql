@@ -4,12 +4,11 @@
 	
 CREATE TABLE t_student(
   `student_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '自增ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `college_id` int(11) NOT NULL COMMENT '学院ID',
   `student_uuid` varchar(200) NOT NULL COMMENT '学号',
   `student_name` varchar(200) NOT NULL DEFAULT '' COMMENT '姓名',
   `student_sex` tinyint(4) NOT NULL DEFAULT '1' COMMENT '性别：1女2男',
-  `student_username` varchar(200) NOT NULL COMMENT '登录用户名',
-  `student_password` varchar(200) NOT NULL COMMENT '登录密码',
-  `student_college_id` int(11) NOT NULL COMMENT '交易类型 1签约 2投资 3回款',
   `student_addr` varchar(200) DEFAULT NULL COMMENT '学生地址',
   `student_score` int(11) NOT NULL DEFAULT 0 COMMENT '学分',
   `student_remark` varchar(500) NOT NULL DEFAULT '' COMMENT '个人签名',
@@ -20,7 +19,7 @@ CREATE TABLE t_student(
 CREATE TABLE t_college(
   `college_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '自增ID',
   `college_number` varchar(200) NOT NULL COMMENT '学院编号',
-  `college_level` tinyint(4) NOT NULL DEFAULT 1 COMMENT '学院等级:1专科2',
+  `college_level` tinyint(4) NOT NULL DEFAULT 1 COMMENT '学院等级:1专科2本科',
   `college_name` varchar(200) NOT NULL COMMENT '学院名称',
   `college_tel` varchar(15) NOT NULL COMMENT '学院联系方式',
   `college_addr` varchar(200) NOT NULL COMMENT '学院地址',
