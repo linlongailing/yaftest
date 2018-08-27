@@ -12,4 +12,11 @@ class IndexController extends Yaf_Controller_Abstract {
     public function registerAction(){
         return true;
     }
+
+    // 用户系统首页
+    public function main(){
+
+    }
+
+
 }
