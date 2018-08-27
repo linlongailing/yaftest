@@ -19,7 +19,7 @@ class DB
     // 获取数据库实例
     public static function getInstance($db_config)
     {
-	if(empty($db_config)) return false;
+        if (empty($db_config)) return false;
         $db_host = $db_config['host'];
         $db_port = $db_config['port'];
         $db_user = $db_config['user'];
@@ -33,7 +33,7 @@ class DB
     // where条件
     public function where($where)
     {
-        $this->where=$where;
+        $this->where = $where;
     }
 
     // 增加数据
@@ -86,18 +86,19 @@ class DB
     }
 
     // 获取一行数据
-    public function find(){
-	$select_sql=$this->where;
-	if(empty($select_sql)) return false;
-	
-	$result=mysqli_query($this->conn,$select_sql);
-	if(!$result) return false;
-	
-	$res=mysqli_fetch_assoc($result);
-	
-	mysqli_free_result($result);
-	
-	return $res;
+    public function find()
+    {
+        $select_sql = $this->where;
+        if (empty($select_sql)) return false;
+
+        $result = mysqli_query($this->conn, $select_sql);
+        if (!$result) return false;
+
+        $res = mysqli_fetch_assoc($result);
+
+        mysqli_free_result($result);
+
+        return $res;
     }
 
     // 获取数量
