@@ -4,6 +4,11 @@ class IndexController extends Yaf_Controller_Abstract {
 
     // 登录页
 	public function indexAction() {
+	    $user=new site_user();
+	    $user_info=$user->get_login_user();
+	    if($user_info['status']==1){
+	        $this->forward("Index","main");
+        }
 	    $this->getView()->assign("title",'首页');
 	    return true;
 	}
@@ -14,8 +19,8 @@ class IndexController extends Yaf_Controller_Abstract {
     }
 
     // 用户系统首页
-    public function main(){
-
+    public function mainAction(){
+        echo "main go";
     }
 
 

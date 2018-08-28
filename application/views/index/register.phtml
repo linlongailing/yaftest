@@ -18,9 +18,9 @@
         <div class="zc">
             <div class="bj_bai">
                 <h3>欢迎注册</h3>
-                <form action="" method="post">
+                <form action="<?php echo BASE_URL.'/user/register';?>" method="post" onsubmit="return false;">
                     <input name="username" type="text" class="kuang_txt username" placeholder="用户名">
-                    <input name="possword" type="password" class="kuang_txt possword" placeholder="密码">
+                    <input name="password" type="password" class="kuang_txt password" placeholder="密码">
                     <input name="confirm_password" type="password" class="kuang_txt confirm_password" placeholder="确认密码">
                     <input name="注册" type="submit" class="btn_zhuce" value="注册">
                 </form>
@@ -35,5 +35,25 @@
         </div>
     </div>
 </div>
+<script>
+    $(".btn_zhuce").click(function () {
+        var username=$(".username").val();
+        var password=$(".password").val();
+        var confirm_password=$(".confirm_password").val();
+
+        var url=$(this).parent("form").attr("action");
+
+        $.post(url,{username:username,password:password,confirm_password:confirm_password},function (data) {
+            if(data.status==-1){
+                alert(data.msg.error);
+                return false;
+            }
+            alert(data.msg.success);
+            setTimeout(function () {
+                window.location.href="<?php echo BASE_URL.'/index';?>";
+            },3000);
+        },'json');
+    });
+</script>
 </body>
 </html>

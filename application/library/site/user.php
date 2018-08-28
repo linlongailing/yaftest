@@ -34,7 +34,7 @@ class Site_user
         }
 
         $password = md5($password);
-        $where_sql = "select * from t_user where username='{$username}' and password='{$password}'";
+        $where_sql = "select * from t_user where user_name='{$username}' and user_password='{$password}'";
         $user_info = $this->user_model->get_user($where_sql);
         if (empty($user_info)) {
             $redata['msg']['error'] = "该用户不存在";
@@ -42,8 +42,13 @@ class Site_user
         }
 
         // 设置session
-        session_start();
-        $_SESSION['user_id'] = $user_info['user_id'];
+        $session = Yaf_Session::getInstance();
+        $session->set('user_id',$user_info['user_id']);
+
+        // 设置用户登录时间
+        $login_time=date('Y-m-d H:i:s');
+        $update_sql = "update t_user set user_login_time = '{$login_time}' where user_name='{$username}'";
+        $this->user_model->update_user($update_sql);
 
         $redata = array();
         $redata ["status"] = 1;
@@ -73,7 +78,7 @@ class Site_user
             return $redata;
         }
         if (!is_passwd($password)) {
-            $redata['msg']['error'] = "用户密码格式错误";
+            $redata['msg']['error'] = "密码格式错误";
             return $redata;
         }
         if (empty($confirm_password)) {
@@ -96,7 +101,7 @@ class Site_user
         $password = md5($password);
         $user_addtime = date('Y-m-d H:i:s');
 
-        $insert_sql = "insert into t_user(user_name,user_password,user_addtime) values('{$username}','{$password}',{$user_addtime})";
+        $insert_sql = "insert into t_user(user_name,user_password,user_addtime) values('{$username}','{$password}','{$user_addtime}')";
         $user_id = $this->user_model->add_user($insert_sql);
         if (!$user_id) {
             $redata['msg']['error'] = "用户注册失败";
@@ -123,9 +128,14 @@ class Site_user
             return $redata;
         }
 
-        $_SESSION['user_id'] = null;
-        unset($_SESSION['user_id']);
-        session_destroy();
+        $session = Yaf_Session::getInstance();
+        $session->__unset('user_id');
+
+        $user_has=$session->has("user_id");
+        if(!$user_has){
+            $redata['msg']['error'] = "登出失败，请重试";
+            return $redata;
+        }
 
         $redata = array();
         $redata ["status"] = 1;
@@ -163,7 +173,8 @@ class Site_user
     {
         $redata = array('status' => -1, 'msg' => array("error" => "操作失败"), 'data' => array());
 
-        $user_id = $_SESSION['user_id'];
+        $session = Yaf_Session::getInstance();
+        $user_id = $session->get('user_id');
         if (empty($user_id)) {
             $redata['msg']['error'] = "用户尚未登录";
             return $redata;
