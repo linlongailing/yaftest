@@ -20,8 +20,6 @@ class IndexController extends Yaf_Controller_Abstract {
 
     // 用户系统首页
     public function mainAction(){
-        echo "main go";
+
     }
-
-
 }
